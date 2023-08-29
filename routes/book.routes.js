@@ -104,8 +104,10 @@ router.get("/books/:bookId", (req, res, next) => {
         console.log("error getting the list of books from the DB");
         next(e)
     })
+
     
-})
+    
+});
 
 
 
