@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Book = require('../models/book.model');
+const Book = require('../models/Book.model');
 const Author = require('../models/Author.model');
 
 require('dotenv').config(); // import and configure dotenv (loads environment variables from .env file)
