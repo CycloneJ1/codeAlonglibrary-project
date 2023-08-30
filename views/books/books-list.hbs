@@ -1,26 +1,18 @@
-{{!-- <ul id="navigation">
-        <a href="/books/{{this.id}}">More details</a>
-        <a href="/books/{{this._id}}/edit">Edit</a>
-      <ul> --}}
-
 <h1>Books in our DB:</h1>
-
 
 {{#each books}}
 <section class="book-summary">
-
     <h2>{{this.title}}</h2>
     <p>
         Author: {{this.author.name}} <br />
         Rating: {{this.rating}} <br />
-        <a href="/books/{{this.id}}">More details</a>
+        <a href="/books/{{this._id}}">More details</a>
         <a href="/books/{{this._id}}/edit">Edit</a>
-
-        <form action="/books/{{this.id}}/delete" method="POST"><button>Delete</button></form>
     </p>
 
-
+    <form action="/books/{{_id}}/delete" method="POST">
+        <button>Delete</button>
+    </form>
+    
 </section>
-
-<hr />
 {{/each}}

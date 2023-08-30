@@ -7,7 +7,7 @@ const bookSchema = new Schema({
     author: {
         type: Schema.Types.ObjectId,
         ref: "Author"
-            },
+        },
     },
     {
         timestamps: true

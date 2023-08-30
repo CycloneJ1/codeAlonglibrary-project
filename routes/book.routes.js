@@ -1,15 +1,14 @@
 const express = require('express');
 const Book = require("../models/Book.model");
-const author = require("../models/Author.model")
+const Author = require("../models/Author.model");
+
 const router = express.Router();
 
 // READ: display all books
 router.get("/books", (req, res, next) => {
     Book.find()
-    .populate("author")
+        .populate("author")
         .then((booksFromDB) => {
-
-            console.log(booksFromDB)
 
             const data = {
                 books: booksFromDB
@@ -27,7 +26,17 @@ router.get("/books", (req, res, next) => {
 
 // CREATE: display form
 router.get("/books/create", (req, res, next) => {
-    res.render("books/book-create");
+    Author.find()
+        .then( authorsFromDB => {
+            const data = {
+                authors: authorsFromDB
+            }
+            res.render("books/book-create", data);
+        })
+        .catch((e) => {
+            console.log("Error getting list of authors from DB", e);
+            next(e);
+        });
 });
 
 
@@ -55,15 +64,22 @@ router.post("/books/create", (req, res, next) => {
 
 
 // UPDATE: display form
-router.get('/books/:bookId/edit', (req, res, next) => {
+router.get('/books/:bookId/edit', async (req, res, next) => {
     const { bookId } = req.params;
 
-    Book.findById(bookId)
-        .then(bookToEdit => {
-            // console.log(bookToEdit);
-            res.render('books/book-edit.hbs', { book: bookToEdit }); // <-- add this line
-        })
-        .catch(error => next(error));
+    try {
+        const bookDetails = await Book.findById(bookId);
+        const authors = await Author.find();
+
+        const data = { 
+            book: bookDetails, 
+            authors: authors 
+        }
+
+        res.render('books/book-edit.hbs', data)
+    } catch(error){
+        next(error)
+    }
 });
 
 
@@ -95,7 +111,7 @@ router.post('/books/:bookId/delete', (req, res, next) => {
 router.get("/books/:bookId", (req, res, next) => {
     const id = req.params.bookId;
     Book.findById(id)
-    .populate("author")
+        .populate("author")
         .then(bookFromDB => {
             res.render("books/book-details", bookFromDB);
         })
